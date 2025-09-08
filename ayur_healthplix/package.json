@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
   "name": "ayur_healthplix",
   "main": "index.js",
   "license": "0BSD",
@@ -46,9 +45,4 @@
     "typescript": "~5.8.3"
   },
   "private": true
-=======
-  "dependencies": {
-    "axios": "^1.11.0"
-  }
->>>>>>> 299efc94bc0ecfa737e3bb298d8facbc463c942e
 }
