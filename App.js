@@ -9,6 +9,8 @@ import AyurvedicRemediesScreen from './AyurvedicRemedies';
 import DoctorDashboardScreen from './DoctorDashboard';
 import PatientPrescriptionsScreen from './PatientPrescriptions';
 import PrakritiGuesserScreen from './PrakritiGuesser';
+import CalorieCounter from './CalorieCounter';
+import NearbyDieticiansScreen from './NearbyDieticiansScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -161,6 +163,8 @@ export default function App() {
           <Stack.Screen name="AyurvedicRemedies" component={AyurvedicRemediesScreen} />
           <Stack.Screen name="PatientPrescriptions" component={PatientPrescriptionsScreen} />
           <Stack.Screen name="PrakritiGuesser" component={PrakritiGuesserScreen} />
+          <Stack.Screen name="CalorieCounter" component={CalorieCounter} />
+          <Stack.Screen name="NearbyDieticiansScreen" component={NearbyDieticiansScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </PaperProvider>

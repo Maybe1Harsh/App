@@ -4,6 +4,13 @@ import { Text, Button, Card, Modal, Portal, DataTable } from 'react-native-paper
 
 export default function DashboardScreen({ navigation, route }) {
   const profile = route.params?.profile;
+  const [doctorModalVisible, setDoctorModalVisible] = React.useState(false);
+  // Sample data for Ayurvedic dieticians
+  const dieticians = [
+    { name: 'Dr. Sharma', rating: 4.8, address: '123 Herbal St, Delhi', phone: '9876543210' },
+    { name: 'Dr. Patel', rating: 4.6, address: '456 Ayurveda Rd, Mumbai', phone: '9123456780' },
+    { name: 'Dr. Rao', rating: 4.7, address: '789 Wellness Ave, Bangalore', phone: '9988776655' },
+  ];
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', alignItems: 'center', padding: 20, backgroundColor: '#f3f6fa' }}>
       <Text variant="headlineMedium" style={{ marginBottom: 20, color: '#2e7d32' }}>
@@ -39,8 +46,10 @@ export default function DashboardScreen({ navigation, route }) {
           <Button mode="contained" onPress={() => navigation.navigate('NearbyDieticiansScreen')}>Show</Button>
         </Card.Actions>
       </Card>
+      
+
       <Card style={{ width: '100%', marginBottom: 15, borderRadius: 16 }}>
-        <Card.Title title="Upload Reports" />
+        <Card.Title title="" />
         <Card.Content>
           <Text>Upload your health reports for doctor review.</Text>
         </Card.Content>

@@ -3,7 +3,6 @@ import { View, ScrollView } from 'react-native';
 import { Text, Button, Card, RadioButton, ProgressBar, Divider } from 'react-native-paper';
 
 const quizData = [
-  // ...existing quizData...
   {
     question: "How would you describe your natural body frame?",
     answers: [
@@ -12,7 +11,78 @@ const quizData = [
       { text: "Solid, sturdy, and well-built. I gain weight easily.", dosha: "kapha" }
     ]
   },
-  // ...rest of quizData...
+  {
+    question: "What is your skin typically like?",
+    answers: [
+      { text: "Dry, thin, and cool. Prone to roughness or cracking.", dosha: "vata" },
+      { text: "Warm, somewhat oily, and sensitive. Prone to moles or rashes.", dosha: "pitta" },
+      { text: "Thick, cool, and smooth, often pale or oily.", dosha: "kapha" }
+    ]
+  },
+  {
+    question: "How is your appetite and digestion?",
+    answers: [
+      { text: "Irregular and variable. I often forget to eat.", dosha: "vata" },
+      { text: "Strong and sharp. I get irritable if I miss a meal.", dosha: "pitta" },
+      { text: "Slow but steady. I can skip meals without much trouble.", dosha: "kapha" }
+    ]
+  },
+  {
+    question: "When under stress, what is your typical reaction?",
+    answers: [
+      { text: "I become anxious, worried, and overwhelmed.", dosha: "vata" },
+      { text: "I become irritable, impatient, and critical.", dosha: "pitta" },
+      { text: "I withdraw, become quiet, and may oversleep or overeat.", dosha: "kapha" }
+    ]
+  },
+  {
+    question: "What best describes your hair?",
+    answers: [
+      { text: "Dry, thin, and sometimes frizzy.", dosha: "vata" },
+      { text: "Fine, straight, and may be prone to early graying or thinning.", dosha: "pitta" },
+      { text: "Thick, wavy, lustrous, and sometimes oily.", dosha: "kapha" }
+    ]
+  },
+  {
+    question: "How do you sleep?",
+    answers: [
+      { text: "I am a light sleeper and easily awakened. My sleep is often interrupted.", dosha: "vata" },
+      { text: "I sleep soundly but for shorter periods. I can feel hot at night.", dosha: "pitta" },
+      { text: "My sleep is deep and long. I can have trouble waking up.", dosha: "kapha" }
+    ]
+  },
+  {
+    question: "What's your mental temperament like?",
+    answers: [
+      { text: "Quick, creative, and full of ideas, but I can lose focus easily.", dosha: "vata" },
+      { text: "Sharp, intelligent, and focused, but can be overly critical or intense.", dosha: "pitta" },
+      { text: "Calm, steady, and methodical, but it takes me time to learn new things.", dosha: "kapha" }
+    ]
+  },
+  {
+    question: "How is your memory?",
+    answers: [
+      { text: "I learn quickly and forget quickly. My short-term memory is better.", dosha: "vata" },
+      { text: "My memory is sharp and clear. I remember things accurately.", dosha: "pitta" },
+      { text: "I am slow to learn but have excellent long-term retention.", dosha: "kapha" }
+    ]
+  },
+  {
+    question: "How is your energy throughout the day?",
+    answers: [
+      { text: "Variable, comes in bursts. I tire easily.", dosha: "vata" },
+      { text: "Consistent but can burn out if I overdo it.", dosha: "pitta" },
+      { text: "Steady and sustained, but I can feel sluggish.", dosha: "kapha" }
+    ]
+  },
+  {
+    question: "How do you react to weather changes?",
+    answers: [
+      { text: "I dislike cold, dry, and windy weather.", dosha: "vata" },
+      { text: "I dislike hot and humid weather.", dosha: "pitta" },
+      { text: "I dislike damp and cold weather.", dosha: "kapha" }
+    ]
+  },
   {
     question: "In which climate do you feel most comfortable?",
     answers: [
@@ -24,7 +94,6 @@ const quizData = [
 ];
 
 const doshaInfo = {
-  // ...existing doshaInfo...
   vata: {
     name: "Vata",
     color: "#0288d1",
@@ -106,7 +175,7 @@ export default function PrakritiGuesserScreen() {
 
   return (
     <View style={{ flex: 1, backgroundColor: '#f3f6fa' }}>
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}>
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', minHeight: 600 }}>
           <Card
             style={{
@@ -120,6 +189,9 @@ export default function PrakritiGuesserScreen() {
               borderColor: '#c5e1a5',
               borderWidth: 1,
               marginVertical: 40,
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center'
             }}
           >
             {step === 'start' && (
@@ -145,12 +217,12 @@ export default function PrakritiGuesserScreen() {
             )}
 
             {step === 'quiz' && (
-              <>
-                <Text variant="titleMedium" style={{ color: '#388e3c', marginBottom: 10, fontWeight: 'bold' }}>
+              <View>
+                <Text variant="titleMedium" style={{ color: '#388e3c', marginBottom: 10, fontWeight: 'bold', textAlign: 'center' }}>
                   Question {current + 1} of {quizData.length}
                 </Text>
                 <ProgressBar progress={(current + 1) / quizData.length} color="#388e3c" style={{ height: 8, borderRadius: 8, marginBottom: 18, backgroundColor: '#e0e0e0' }} />
-                <Text style={{ fontSize: 18, color: '#4e342e', marginBottom: 18, fontWeight: '600' }}>
+                <Text style={{ fontSize: 18, color: '#4e342e', marginBottom: 18, fontWeight: '600', textAlign: 'center' }}>
                   {quizData[current].question}
                 </Text>
                 <RadioButton.Group onValueChange={handleSelect} value={selected}>
@@ -180,7 +252,7 @@ export default function PrakritiGuesserScreen() {
                 >
                   {current + 1 === quizData.length ? 'See Result' : 'Next'}
                 </Button>
-              </>
+              </View>
             )}
 
             {step === 'result' && (
@@ -233,3 +305,8 @@ export default function PrakritiGuesserScreen() {
               This quiz is for informational purposes only and is not a substitute for professional medical advice.
             </Text>
           )}
+        </View>
+      </ScrollView>
+    </View>
+  );
+}
