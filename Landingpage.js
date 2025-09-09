@@ -36,4 +36,8 @@ export default function LandingScreen({ navigation }) {
       </ScrollView>
     </ImageBackground>
   );
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> a05fc24ac64bca78c94b21bbf8e0859546d636ce

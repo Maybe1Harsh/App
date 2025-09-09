@@ -16,7 +16,7 @@ export default function DashboardScreen({ navigation, route }) {
       <Text variant="headlineMedium" style={{ marginBottom: 20, color: '#2e7d32' }}>
         Welcome, Patient!
       </Text>
-      <Button
+      <Button 
         mode="contained"
         onPress={() => navigation.navigate('PatientPrescriptions', { profile })}
         style={{ marginBottom: 10, backgroundColor: '#1976d2' }}
