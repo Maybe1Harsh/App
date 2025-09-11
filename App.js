@@ -160,6 +160,7 @@ export default function App() {
         <Stack.Navigator initialRouteName="Login">
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="DoctorDashboard" component={DoctorDashboardScreen} />
+          <Stack.Screen name="AddPatient" component={require('./AddPatient').default} />
           <Stack.Screen name="Dashboard" component={DashboardScreen} />
           <Stack.Screen name="AyurvedicRemedies" component={AyurvedicRemediesScreen} />
           <Stack.Screen name="PatientPrescriptions" component={PatientPrescriptionsScreen} />
