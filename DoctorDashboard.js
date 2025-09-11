@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { ScrollView, View } from "react-native";
 import { Text, Card, Button, Divider } from "react-native-paper";
+import { useFocusEffect } from '@react-navigation/native';
 import { supabase } from "./supabaseClient";
 
 export default function DoctorDashboardScreen({ route, navigation }) {
@@ -10,12 +11,98 @@ export default function DoctorDashboardScreen({ route, navigation }) {
   const [schedule, setSchedule] = useState([]);
 
   // Fetch patients assigned to this doctor
-  useEffect(() => {
+  const fetchPatients = useCallback(() => {
     supabase
       .from("patients")
       .select("*")
       .eq("doctor_email", doctorEmail)
       .then(({ data }) => setPatients(data || []));
+  }, [doctorEmail]);
+
+  useFocusEffect(fetchPatients);
+
+  // Real-time subscription for patients
+  React.useEffect(() => {
+    if (!doctorEmail) return;
+
+    const channel = supabase
+      .channel('patients_changes_' + doctorEmail)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'patients',
+        },
+        (payload) => {
+          console.log('Patients change received!', payload);
+          // Check if the change affects this doctor
+          if (payload.new && payload.new.doctor_email === doctorEmail) {
+            fetchPatients();
+          } else if (payload.old && payload.old.doctor_email === doctorEmail) {
+            fetchPatients();
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [doctorEmail, fetchPatients]);
+
+  // Real-time subscription for rejected requests
+  React.useEffect(() => {
+    if (!doctorEmail) return;
+
+    const channel = supabase
+      .channel('rejected_requests_changes')
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'patient_requests',
+        },
+        (payload) => {
+          if (payload.new && payload.new.status === 'rejected' && payload.new.doctor_email === doctorEmail) {
+            alert(`Patient ${payload.new.patient_email} has rejected your request.`);
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [doctorEmail]);
+
+  // Check for declined requests and notify doctor
+  React.useEffect(() => {
+    const checkDeclinedRequests = async () => {
+      const { data, error } = await supabase
+        .from('patient_requests')
+        .select('id, patient_email, doctor:Profiles(name)')
+        .eq('doctor_email', doctorEmail)
+        .eq('status', 'declined');
+
+      if (error) {
+        console.error('Error fetching declined requests:', error);
+        return;
+      }
+
+      if (data && data.length > 0) {
+        const declinedPatients = data.map(req => req.patient_email).join(', ');
+        alert(`The following patients have declined your request: ${declinedPatients}`);
+
+        // Optionally, update status to notified or delete the records
+        // For now, we'll leave them as is
+      }
+    };
+
+    if (doctorEmail) {
+      checkDeclinedRequests();
+    }
   }, [doctorEmail]);
 
   // Fetch today's schedule
@@ -136,3 +223,4 @@ export default function DoctorDashboardScreen({ route, navigation }) {
     </ScrollView>
   );
 }
+
