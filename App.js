@@ -13,6 +13,7 @@ import PatientPrescriptionsScreen from './PatientPrescriptions';
 import PrakritiGuesserScreen from './PrakritiGuesser';
 import CalorieCounter from './CalorieCounter';
 import NearbyDieticiansScreen from './NearbyDieticiansScreen';
+import AddPatientScreen from './AddPatient';
 
 const Stack = createNativeStackNavigator();
 
@@ -347,6 +348,7 @@ export default function App() {
           <Stack.Screen name="Landing" component={LandingScreen} options={{ headerShown: false }} />
           <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
           <Stack.Screen name="DoctorDashboard" component={DoctorDashboardScreen} />
+          <Stack.Screen name="AddPatient" component={AddPatientScreen} />
           <Stack.Screen name="Dashboard" component={DashboardScreen} />
           <Stack.Screen name="AyurvedicRemedies" component={AyurvedicRemediesScreen} />
           <Stack.Screen name="PatientPrescriptions" component={PatientPrescriptionsScreen} />
@@ -358,4 +360,3 @@ export default function App() {
     </PaperProvider>
   );
 }
-
