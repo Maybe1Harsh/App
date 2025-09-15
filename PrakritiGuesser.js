@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { View, ScrollView } from 'react-native';
 import { Text, Button, Card, RadioButton, ProgressBar, Divider } from 'react-native-paper';
+import { useTranslation } from './hooks/useTranslation';
 
 const quizData = [
   {
@@ -141,6 +142,7 @@ function getResult(scores) {
 }
 
 export default function PrakritiGuesserScreen() {
+  const { t } = useTranslation();
   const [step, setStep] = React.useState('start'); // start | quiz | result
   const [current, setCurrent] = React.useState(0);
   const [selected, setSelected] = React.useState('');
@@ -198,10 +200,10 @@ export default function PrakritiGuesserScreen() {
               <>
                 <View style={{ alignItems: 'center', marginBottom: 20 }}>
                   <Text variant="headlineLarge" style={{ color: '#388e3c', fontWeight: 'bold', marginBottom: 8 }}>
-                    🌿 Prakriti Guesser
+                    🌿 {t.pgTitle}
                   </Text>
                   <Text style={{ color: '#6d4c41', fontSize: 16, textAlign: 'center', marginBottom: 10 }}>
-                    Discover your Ayurvedic mind-body constitution (Dosha) by answering a few simple questions.
+                    {t.pgIntro}
                   </Text>
                 </View>
                 <Button
@@ -211,7 +213,7 @@ export default function PrakritiGuesserScreen() {
                   style={{ borderRadius: 30, marginTop: 10 }}
                   onPress={startQuiz}
                 >
-                  Start Quiz
+                  {t.pgStartQuiz}
                 </Button>
               </>
             )}
@@ -219,7 +221,7 @@ export default function PrakritiGuesserScreen() {
             {step === 'quiz' && (
               <View>
                 <Text variant="titleMedium" style={{ color: '#388e3c', marginBottom: 10, fontWeight: 'bold', textAlign: 'center' }}>
-                  Question {current + 1} of {quizData.length}
+                  {t.pgQuestionCounter.replace('{current}', String(current + 1)).replace('{total}', String(quizData.length))}
                 </Text>
                 <ProgressBar progress={(current + 1) / quizData.length} color="#388e3c" style={{ height: 8, borderRadius: 8, marginBottom: 18, backgroundColor: '#e0e0e0' }} />
                 <Text style={{ fontSize: 18, color: '#4e342e', marginBottom: 18, fontWeight: '600', textAlign: 'center' }}>
@@ -250,7 +252,7 @@ export default function PrakritiGuesserScreen() {
                   disabled={!selected}
                   onPress={handleNext}
                 >
-                  {current + 1 === quizData.length ? 'See Result' : 'Next'}
+                  {current + 1 === quizData.length ? t.pgSeeResult : t.commonNext}
                 </Button>
               </View>
             )}
@@ -259,7 +261,7 @@ export default function PrakritiGuesserScreen() {
               <>
                 <View style={{ alignItems: 'center', marginBottom: 16 }}>
                   <Text variant="headlineMedium" style={{ color: '#388e3c', fontWeight: 'bold', marginBottom: 6 }}>
-                    Your Prakriti Result
+                    {t.pgYourResult}
                   </Text>
                   <Divider style={{ width: 60, height: 3, backgroundColor: '#388e3c', marginBottom: 10, borderRadius: 2 }} />
                 </View>
@@ -295,14 +297,14 @@ export default function PrakritiGuesserScreen() {
                   textColor="#388e3c"
                   onPress={handleRetake}
                 >
-                  Retake Quiz
+                  {t.pgRetake}
                 </Button>
               </>
             )}
           </Card>
           {(step === 'start' || step === 'result') && (
             <Text style={{ color: '#a1887f', fontSize: 12, marginTop: 18, textAlign: 'center', maxWidth: 500 }}>
-              This quiz is for informational purposes only and is not a substitute for professional medical advice.
+              {t.pgDisclaimer}
             </Text>
           )}
         </View>
