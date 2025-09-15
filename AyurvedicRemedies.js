@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ScrollView, View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import { Text, Button, Card, Portal, Modal, Provider as PaperProvider } from 'react-native-paper';
+import { useTranslation } from './hooks/useTranslation';
 
 const healthIssues = {
   "Headache": {
@@ -100,6 +101,7 @@ const healthIssues = {
 
 
 export default function AyurvedicRemedies() {
+  const { t } = useTranslation();
   const [selected, setSelected] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [remedyBoxVisible, setRemedyBoxVisible] = useState(false);
@@ -119,7 +121,7 @@ export default function AyurvedicRemedies() {
       <TouchableWithoutFeedback onPress={() => setRemedyBoxVisible(true)}>
         <View style={{ flex: 1 }}>
           <ScrollView contentContainerStyle={styles.container}>
-            <Text style={styles.header}>Ayurvedic Home Remedies</Text>
+            <Text style={styles.header}>{t.remTitle}</Text>
             <View style={styles.grid}>
               {Object.keys(healthIssues).map((issue) => (
                 <Card
@@ -131,6 +133,8 @@ export default function AyurvedicRemedies() {
                 </Card>
               ))}
             </View>
+            {/* Disclaimer (subtle, visible once per screen) */}
+            <Text style={{ fontSize: 12, color: '#6d4c41', textAlign: 'center', marginVertical: 8, opacity: 0.85 }}>{t.remDisclaimer}</Text>
             <Portal>
               {/* Existing Modal for health issues */}
               <Modal visible={modalVisible} onDismiss={hideModal} contentContainerStyle={styles.modal}>
@@ -138,19 +142,19 @@ export default function AyurvedicRemedies() {
                   <ScrollView>
                     <Text style={styles.modalTitle}>{selected}</Text>
                     <Text style={styles.modalExplanation}>{healthIssues[selected].explanation}</Text>
-                    <Text style={styles.modalSection}>🌿 Remedies</Text>
+                    <Text style={styles.modalSection}>🌿 {t.remRemedies}</Text>
                     <Text style={styles.modalText}>{healthIssues[selected].remedies}</Text>
-                    <Text style={styles.modalSection}>🍎 What to Avoid</Text>
+                    <Text style={styles.modalSection}>🍎 {t.remAvoid}</Text>
                     <Text style={styles.modalText}>{healthIssues[selected].avoid}</Text>
-                    <Button mode="outlined" onPress={hideModal} style={{ marginTop: 10 }}>Close</Button>
+                    <Button mode="outlined" onPress={hideModal} style={{ marginTop: 10 }}>{t.commonClose}</Button>
                   </ScrollView>
                 )}
               </Modal>
               {/* Remedy Box Modal, can be opened from anywhere */}
               <Modal visible={remedyBoxVisible} onDismiss={() => setRemedyBoxVisible(false)} contentContainerStyle={styles.remedyBoxModal}>
-                <Text style={styles.remedyBoxTitle}>Remedy Box</Text>
-                <Text style={styles.remedyBoxContent}>This is your Ayurvedic Remedy Box! Add your custom remedies here.</Text>
-                <Button mode="contained" onPress={() => setRemedyBoxVisible(false)} style={{ marginTop: 10 }}>Close</Button>
+                <Text style={styles.remedyBoxTitle}>{t.remBox}</Text>
+                <Text style={styles.remedyBoxContent}>{t.remBoxContent}</Text>
+                <Button mode="contained" onPress={() => setRemedyBoxVisible(false)} style={{ marginTop: 10 }}>{t.commonClose}</Button>
               </Modal>
             </Portal>
             {/* Floating Button to open Remedy Box */}
@@ -160,7 +164,7 @@ export default function AyurvedicRemedies() {
               onPress={() => setRemedyBoxVisible(true)}
               icon="plus"
             >
-              Remedy Box
+              {t.remBox}
             </Button>
           </ScrollView>
         </View>
