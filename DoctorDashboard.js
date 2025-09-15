@@ -3,10 +3,15 @@ import { ScrollView, View } from "react-native";
 import { Text, Card, Button, Divider } from "react-native-paper";
 import { useFocusEffect } from '@react-navigation/native';
 import { supabase } from "./supabaseClient";
+import { useTranslation } from './hooks/useTranslation';
+
+const { width } = Dimensions.get('window');
 
 export default function DoctorDashboardScreen({ route, navigation }) {
+  const { t } = useTranslation();
   const doctorEmail = route.params?.profile?.email || "";
   const doctorName = route.params?.profile?.name || "";
+  const doctorProfile = route.params?.profile || {};
   const [patients, setPatients] = useState([]);
   const [schedule, setSchedule] = useState([]);
 
@@ -115,6 +120,16 @@ export default function DoctorDashboardScreen({ route, navigation }) {
       .eq("date", today)
       .then(({ data }) => setSchedule(data || []));
   }, [doctorEmail]);
+
+  // Add logout handler similar to patient dashboard
+  const handleLogout = async () => {
+    try {
+      await supabase.auth.signOut();
+      navigation.reset({ index: 0, routes: [{ name: 'Landing' }] });
+    } catch (e) {
+      console.error('Logout error:', e);
+    }
+  };
 
   return (
     <ScrollView
@@ -252,8 +267,285 @@ export default function DoctorDashboardScreen({ route, navigation }) {
         </Card.Content>
       </Card>
     </ScrollView>
-  );
+   );
 }
+
+// Comprehensive StyleSheet matching the landing and login page design
+const dashboardStyles = {
+  container: {
+    flex: 1,
+  },
+  gradient: {
+    flex: 1,
+  },
+  scrollContainer: {
+    flexGrow: 1,
+    paddingBottom: 30,
+  },
+  headerSection: {
+    alignItems: 'center',
+    paddingVertical: 40,
+    paddingHorizontal: 20,
+  },
+  logoContainer: {
+    width: 100,
+    height: 100,
+    backgroundColor: '#ffffff',
+    borderRadius: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 5,
+  },
+  logoEmoji: {
+    fontSize: 40,
+  },
+  title: {
+    color: '#2e7d32',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 8,
+  },
+  subtitle: {
+    color: '#4caf50',
+    fontSize: 16,
+    textAlign: 'center',
+    fontStyle: 'italic',
+    marginBottom: 20,
+  },
+  logoutButton: {
+    borderColor: '#4caf50',
+    borderWidth: 1,
+    borderRadius: 20,
+  },
+  logoutButtonLabel: {
+    color: '#4caf50',
+    fontSize: 14,
+  },
+  
+  // Stats Cards
+  statsContainer: {
+    flexDirection: 'row',
+    paddingHorizontal: 20,
+    marginBottom: 20,
+    gap: 15,
+  },
+  statCard: {
+    flex: 1,
+    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    borderRadius: 15,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  statCardContent: {
+    alignItems: 'center',
+    paddingVertical: 20,
+  },
+  statNumber: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: '#2e7d32',
+    marginBottom: 5,
+  },
+  statLabel: {
+    fontSize: 14,
+    color: '#666666',
+    textAlign: 'center',
+    fontWeight: '500',
+  },
+  
+  // Section Cards
+  sectionCard: {
+    marginHorizontal: 20,
+    marginBottom: 20,
+    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    borderRadius: 15,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 15,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#2e7d32',
+  },
+  sectionDivider: {
+    marginBottom: 15,
+    backgroundColor: '#e0e0e0',
+  },
+  
+  // Chips
+  scheduleChip: {
+    backgroundColor: '#e8f5e8',
+    borderColor: '#4caf50',
+  },
+  patientsChip: {
+    backgroundColor: '#e3f2fd',
+    borderColor: '#1976d2',
+  },
+  chipText: {
+    fontSize: 12,
+    color: '#2e7d32',
+  },
+  
+  // Empty States
+  emptyState: {
+    alignItems: 'center',
+    paddingVertical: 30,
+  },
+  emptyStateText: {
+    fontSize: 16,
+    color: '#666666',
+    textAlign: 'center',
+    marginBottom: 8,
+  },
+  emptyStateSubtext: {
+    fontSize: 14,
+    color: '#999999',
+    textAlign: 'center',
+    fontStyle: 'italic',
+  },
+  
+  // Add Patient Button
+  addPatientButton: {
+    backgroundColor: '#4caf50',
+    borderRadius: 25,
+    marginBottom: 20,
+    shadowColor: '#4caf50',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 6,
+  },
+  addPatientButtonContent: {
+    paddingVertical: 8,
+  },
+  addPatientButtonLabel: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#ffffff',
+  },
+  
+  // Schedule List
+  scheduleList: {
+    gap: 12,
+  },
+  appointmentCard: {
+    backgroundColor: '#f8f9fa',
+    borderRadius: 12,
+    borderLeftWidth: 4,
+    borderLeftColor: '#4caf50',
+  },
+  appointmentContent: {
+    paddingVertical: 15,
+  },
+  appointmentHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  appointmentTime: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#2e7d32',
+  },
+  appointmentChip: {
+    backgroundColor: '#e8f5e8',
+  },
+  appointmentChipText: {
+    fontSize: 12,
+    color: '#4caf50',
+  },
+  patientName: {
+    fontSize: 15,
+    color: '#424242',
+    marginBottom: 4,
+  },
+  appointmentNotes: {
+    fontSize: 14,
+    color: '#666666',
+    fontStyle: 'italic',
+  },
+  
+  // Patients List
+  patientsList: {
+    gap: 12,
+  },
+  patientCard: {
+    backgroundColor: '#f8f9fa',
+    borderRadius: 12,
+    borderLeftWidth: 4,
+    borderLeftColor: '#1976d2',
+  },
+  patientContent: {
+    paddingVertical: 15,
+  },
+  patientHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  patientAvatar: {
+    backgroundColor: '#1976d2',
+    marginRight: 15,
+  },
+  avatarLabel: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#ffffff',
+  },
+  patientInfo: {
+    flex: 1,
+  },
+  patientEmail: {
+    fontSize: 14,
+    color: '#666666',
+    marginTop: 2,
+  },
+  patientAge: {
+    fontSize: 13,
+    color: '#888888',
+    marginTop: 2,
+  },
+  
+  // Quick Actions
+  quickActionsGrid: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  quickActionButton: {
+    flex: 1,
+    backgroundColor: '#f5f5f5',
+    borderRadius: 12,
+  },
+  quickActionLabel: {
+    fontSize: 14,
+    color: '#2e7d32',
+    fontWeight: '600',
+  },
+  
+  // Footer
+  footerSpacing: {
+    height: 20,
+  },
+};
+
+
 
 
 
