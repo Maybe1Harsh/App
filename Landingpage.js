@@ -1,28 +1,29 @@
-
 import React from 'react';
 import { View, Image, ImageBackground, ScrollView, StyleSheet, Dimensions } from 'react-native';
 import { Button, Text, Card, Divider } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useTranslation } from './hooks/useTranslation';
 
 const { width, height } = Dimensions.get('window');
 
 export default function LandingScreen({ navigation }) {
+  const { t, language, setLanguage } = useTranslation();
   const features = [
     {
-      title: "🌿 Personalized Prakriti Assessment",
-      description: "Discover your unique Ayurvedic constitution and get personalized health recommendations"
+      title: t.prakritiTitle || "🌿 Personalized Prakriti Assessment",
+      description: t.prakritiDesc || "Discover your unique Ayurvedic constitution and get personalized health recommendations"
     },
     {
-      title: "🏥 Expert Consultations",
-      description: "Connect with certified Ayurvedic doctors and nutritionists for professional guidance"
+      title: t.consultTitle || "🏥 Expert Consultations",
+      description: t.consultDesc || "Connect with certified Ayurvedic doctors and nutritionists for professional guidance"
     },
     {
-      title: "💊 Natural Remedies Database",
-      description: "Access thousands of time-tested Ayurvedic remedies for common health issues"
+      title: t.remedyTitle || "💊 Natural Remedies Database",
+      description: t.remedyDesc || "Access thousands of time-tested Ayurvedic remedies for common health issues"
     },
     {
-      title: "🍽️ Nutrition Tracking",
-      description: "Monitor your daily nutrition intake with Ayurvedic dietary principles"
+      title: t.nutritionTitle || "🍽️ Nutrition Tracking",
+      description: t.nutritionDesc || "Monitor your daily nutrition intake with Ayurvedic dietary principles"
     }
   ];
 
@@ -33,6 +34,22 @@ export default function LandingScreen({ navigation }) {
         style={styles.gradient}
       >
         <ScrollView contentContainerStyle={styles.scrollContainer}>
+          {/* Language Toggle */}
+          <View style={styles.languageToggle}>
+            <Button
+              mode={language === 'en' ? 'contained' : 'outlined'}
+              onPress={() => setLanguage('en')}
+              style={{ marginRight: 10 }}
+            >
+              English
+            </Button>
+            <Button
+              mode={language === 'hi' ? 'contained' : 'outlined'}
+              onPress={() => setLanguage('hi')}
+            >
+              हिन्दी
+            </Button>
+          </View>
           {/* Header Section */}
           <View style={styles.headerSection}>
             <View style={styles.logoContainer}>
@@ -42,7 +59,7 @@ export default function LandingScreen({ navigation }) {
               Ayur HealthPlix
             </Text>
             <Text style={styles.subtitle}>
-              Ancient Wisdom • Modern Technology • Personalized Care
+              {t.subtitle || "Ancient Wisdom • Modern Technology • Personalized Care"}
             </Text>
           </View>
 
@@ -50,11 +67,11 @@ export default function LandingScreen({ navigation }) {
           <Card style={styles.aboutCard}>
             <Card.Content>
               <Text variant="headlineSmall" style={styles.sectionTitle}>
-                About Ayurveda
+                {t.aboutAyurveda || "About Ayurveda"}
               </Text>
               <Text style={styles.aboutText}>
-                Ayurveda, the 5000-year-old "Science of Life", offers holistic solutions for modern health challenges. 
-                Our platform bridges ancient wisdom with cutting-edge technology to provide personalized healthcare solutions.
+                {t.aboutText || `Ayurveda, the 5000-year-old "Science of Life", offers holistic solutions for modern health challenges. 
+                Our platform bridges ancient wisdom with cutting-edge technology to provide personalized healthcare solutions.`}
               </Text>
             </Card.Content>
           </Card>
@@ -62,7 +79,7 @@ export default function LandingScreen({ navigation }) {
           {/* Features Section */}
           <View style={styles.featuresSection}>
             <Text variant="headlineSmall" style={styles.sectionTitle}>
-              What We Offer
+              {t.whatWeOffer || "What We Offer"}
             </Text>
             {features.map((feature, index) => (
               <Card key={index} style={styles.featureCard}>
@@ -82,14 +99,14 @@ export default function LandingScreen({ navigation }) {
           <Card style={styles.benefitsCard}>
             <Card.Content>
               <Text variant="headlineSmall" style={styles.sectionTitle}>
-                Why Choose Ayur HealthPlix?
+                {t.whyChoose || "Why Choose Ayur HealthPlix?"}
               </Text>
               <View style={styles.benefitsList}>
-                <Text style={styles.benefitItem}>✅ Personalized health assessments</Text>
-                <Text style={styles.benefitItem}>✅ Evidence-based natural remedies</Text>
-                <Text style={styles.benefitItem}>✅ Expert medical consultations</Text>
-                <Text style={styles.benefitItem}>✅ Comprehensive lifestyle guidance</Text>
-                <Text style={styles.benefitItem}>✅ Track your wellness journey</Text>
+                <Text style={styles.benefitItem}>{t.benefit1 || "✅ Personalized health assessments"}</Text>
+                <Text style={styles.benefitItem}>{t.benefit2 || "✅ Evidence-based natural remedies"}</Text>
+                <Text style={styles.benefitItem}>{t.benefit3 || "✅ Expert medical consultations"}</Text>
+                <Text style={styles.benefitItem}>{t.benefit4 || "✅ Comprehensive lifestyle guidance"}</Text>
+                <Text style={styles.benefitItem}>{t.benefit5 || "✅ Track your wellness journey"}</Text>
               </View>
             </Card.Content>
           </Card>
@@ -97,7 +114,7 @@ export default function LandingScreen({ navigation }) {
           {/* CTA Section */}
           <View style={styles.ctaSection}>
             <Text style={styles.ctaText}>
-              Ready to begin your wellness journey?
+              {t.readyToBegin || "Ready to begin your wellness journey?"}
             </Text>
             <Button
               mode="contained"
@@ -106,10 +123,10 @@ export default function LandingScreen({ navigation }) {
               labelStyle={styles.buttonLabel}
               contentStyle={styles.buttonContent}
             >
-              Get Started
+              {t.getStarted || "Get Started"}
             </Button>
             <Text style={styles.footerText}>
-              Join thousands who trust Ayur HealthPlix for their wellness needs
+              {t.joinThousands || "Join thousands who trust Ayur HealthPlix for their wellness needs"}
             </Text>
           </View>
         </ScrollView>
@@ -128,6 +145,12 @@ const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
     paddingBottom: 30,
+  },
+  languageToggle: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 20,
+    marginBottom: 10,
   },
   headerSection: {
     alignItems: 'center',
