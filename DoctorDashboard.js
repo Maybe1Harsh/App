@@ -139,19 +139,50 @@ export default function DoctorDashboardScreen({ route, navigation }) {
         </Card.Content>
       </Card>
 
-      {/* Add Patient Button */}
+      {/* Action Buttons */}
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20 }}>
+        <Button
+          mode="contained"
+          onPress={() => navigation.navigate("AddPatient", { doctorEmail })}
+          style={{
+            flex: 1,
+            marginRight: 8,
+            backgroundColor: "#388e3c",
+            borderRadius: 10,
+            paddingVertical: 5,
+          }}
+          labelStyle={{ fontSize: 14 }}
+        >
+          ➕ Add Patient
+        </Button>
+        <Button
+          mode="contained"
+          onPress={() => navigation.navigate("DoctorPrescriptions", { profile: route.params?.profile })}
+          style={{
+            flex: 1,
+            marginLeft: 8,
+            backgroundColor: "#1976d2",
+            borderRadius: 10,
+            paddingVertical: 5,
+          }}
+          labelStyle={{ fontSize: 14 }}
+        >
+          📝 Prescriptions
+        </Button>
+      </View>
+      
       <Button
         mode="contained"
-        onPress={() => navigation.navigate("AddPatient", { doctorEmail })}
+        onPress={() => navigation.navigate("DietChartTemplates", { profile: route.params?.profile })}
         style={{
           marginBottom: 20,
-          backgroundColor: "#388e3c",
+          backgroundColor: "#ff9800",
           borderRadius: 10,
           paddingVertical: 5,
         }}
         labelStyle={{ fontSize: 16 }}
       >
-        ➕ Add New Patient
+        🍽️ Diet Charts
       </Button>
 
       {/* Schedule Section */}
@@ -223,4 +254,6 @@ export default function DoctorDashboardScreen({ route, navigation }) {
     </ScrollView>
   );
 }
+
+
 
