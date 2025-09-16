@@ -256,6 +256,14 @@ export default function DashboardScreen({ navigation, route }) {
             </Text>
           </Card.Content>
         </Card>
+        {/* Add Request Appointment button here */}
+        <Button
+          mode="contained"
+          style={{ marginBottom: 15, backgroundColor: '#2e7d32' }}
+          onPress={() => navigation.navigate('PatientAppointment', { patientEmail: profile?.email })}
+        >
+          Request Appointment
+        </Button>
         <Button
           mode="contained"
           onPress={() => navigation.navigate('PatientPrescriptions', { profile })}
