@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Provider as PaperProvider, ActivityIndicator } from 'react-native-paper';
+import { Provider as PaperProvider, ActivityIndicator, Text } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LandingScreen from './Landingpage';
@@ -17,12 +17,17 @@ import DietChartTemplates from './DietChartTemplates';
 import CustomizeDietChart from './CustomizeDietChart';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AddPatientScreen from './AddPatient';
+import PatientAppointmentScreen from './PatientAppointment';
+import { View } from 'react-native'; // Add View import for debug
+
+console.log('App.js loaded');
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   const [bootstrapping, setBootstrapping] = React.useState(true);
   const [storedProfile, setStoredProfile] = React.useState(null);
+  const [error, setError] = React.useState(null);
 
   React.useEffect(() => {
     (async () => {
@@ -32,7 +37,7 @@ export default function App() {
           setStoredProfile(JSON.parse(saved));
         }
       } catch (e) {
-        // ignore
+        setError(e);
       } finally {
         setBootstrapping(false);
       }
@@ -48,6 +53,26 @@ export default function App() {
       </PaperProvider>
     );
   }
+
+  if (error) {
+    return (
+      <PaperProvider>
+        <LanguageProvider initial="en">
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <Text style={{ color: 'red', fontSize: 18 }}>App Error: {error.message}</Text>
+          </View>
+        </LanguageProvider>
+      </PaperProvider>
+    );
+  }
+
+  // Add a debug message to confirm rendering
+  // Remove this after debugging
+  // return (
+  //   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+  //     <Text>App.js is rendering!</Text>
+  //   </View>
+  // );
 
   return (
     <PaperProvider>
@@ -68,6 +93,11 @@ export default function App() {
               <Stack.Screen name="CalorieCounter" component={CalorieCounter} />
               <Stack.Screen name="NearbyDieticiansScreen" component={NearbyDieticiansScreen} />
               <Stack.Screen name="AddPatient" component={AddPatientScreen} />
+              <Stack.Screen
+                name="PatientAppointment"
+                component={PatientAppointmentScreen}
+                options={{ title: 'Request Appointment' }}
+              />
             </Stack.Navigator>
           ) : (
             <Stack.Navigator initialRouteName="Landing">
@@ -84,6 +114,10 @@ export default function App() {
               <Stack.Screen name="CalorieCounter" component={CalorieCounter} />
               <Stack.Screen name="AddPatient" component={AddPatientScreen} />
               <Stack.Screen name="NearbyDieticiansScreen" component={NearbyDieticiansScreen} />
+              <Stack.Screen name="PatientAppointment"
+                component={PatientAppointmentScreen}
+                options={{ title: 'Request Appointment' }}
+              />
             </Stack.Navigator>
           )}
         </NavigationContainer>
