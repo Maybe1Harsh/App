@@ -71,9 +71,10 @@ export default function DietChartTemplatesScreen({ navigation, route }) {
   const doctorEmail = route.params?.profile?.email;
 
   const handleCustomizeTemplate = (template) => {
+    console.log('Navigating to CustomizeDietChart with:', { template, doctorEmail });
     navigation.navigate('CustomizeDietChart', { 
       template, 
-      doctorEmail,
+      doctorEmail: route.params?.profile?.email,
       profile: route.params?.profile 
     });
   };
